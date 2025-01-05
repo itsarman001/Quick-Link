@@ -1,4 +1,4 @@
-import { Input } from "./input";
+import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
@@ -15,6 +15,7 @@ import Error from "./error";
 import { login } from "@/db/apiAuth";
 import { BeatLoader } from "react-spinners";
 import useFetch from "@/hooks/use-fetch";
+import { UrlState } from "@/context";
 
 const Login = () => {
   let [searchParams] = useSearchParams();
@@ -37,10 +38,12 @@ const Login = () => {
   };
 
   const { loading, error, fn: fnLogin, data } = useFetch(login, formData);
+  const { fetchUser } = UrlState();
 
   useEffect(() => {
     if (error === null && data) {
       navigate(`/dashboard?${longLink ? `createNew=${longLink}` : ""}`);
+      fetchUser();
     }
   }, [error, data]);
 
@@ -99,7 +102,7 @@ const Login = () => {
         {errors.password && <Error message={errors.password} />}
       </CardContent>
       <CardFooter>
-        <Button onClick={handleLogin}>
+        <Button className="w-full" onClick={handleLogin}>
           {loading ? <BeatLoader size={10} color="#36d7b7" /> : "Login"}
         </Button>
       </CardFooter>

@@ -38,9 +38,10 @@ export async function signup({name, email, password, profile_pic}) {
 
 export async function getCurrentUser() {
   const {data: session, error} = await supabase.auth.getSession();
+  // If need to fetch user from database
+  // const {data, error} = await supabase.auth.getUser();
   if (!session.session) return null;
 
-  // const {data, error} = await supabase.auth.getUser();
 
   if (error) throw new Error(error.message);
   return session.session?.user;
